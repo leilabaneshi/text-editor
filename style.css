@@ -1,0 +1,12 @@
+body {
+  background-color: gray;
+  color: white;
+}
+
+.container {
+  text-align: center;
+}
+iframe {
+  background-color: #fff;
+  margin-left: 12vw;
+}
