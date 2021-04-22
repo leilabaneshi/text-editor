@@ -13,32 +13,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Text Editor</title>
   </head>
-  <body>
+  <body onload="enabledEditMode()">
     <div class="container">
       <h1>My text editor</h1>
-      <button title="bold"><i class="fas fa-bold"></i></button>
-      <button title="italic"><i class="fas fa-italic"></i></button>
-      <button title="underline"><i class="fas fa-underline"></i></button>
-      <button title="strikethrouth">
+      <!-- title => hover name -->
+      <button title="bold" onclick="execCmd('bold')">
+        <i class="fas fa-bold"></i>
+      </button>
+      <button title="italic" onclick="execCmd('italic')">
+        <i class="fas fa-italic"></i>
+      </button>
+      <button title="underline" onclick="execCmd('underline')">
+        <i class="fas fa-underline"></i>
+      </button>
+      <button title="strikethrouth" onclick="execCmd('strikethrouth')">
         <i class="fas fa-strikethrough"></i>
       </button>
-      <button title="align left"><i class="fas fa-align-left"></i></button>
-      <button title="alighn center"><i class="fas fa-align-center"></i></button>
-      <button title="align right"><i class="fas fa-align-right"></i></button>
-      <button title="align justify">
+      <button title="align left" onclick="execCmd('justifyLeft')">
+        <i class="fas fa-align-left"></i>
+      </button>
+      <button title="alighn center" onclick="execCmd('justifyCenter')">
+        <i class="fas fa-align-center"></i>
+      </button>
+      <button title="align right" onclick="execCmd('justifyRight')">
+        <i class="fas fa-align-right"></i>
+      </button>
+      <button title="align justify" onclick="execCmd('justifyFull')">
         <i class="fas fa-align-justify"></i>
       </button>
-      <button title="cut"><i class="fas fa-cut"></i></button>
-      <button title="copy"><i class="fas fa-copy"></i></button>
-      <button title="indent"><i class="fas fa-indent"></i></button>
-      <button title="outdent"><i class="fas fa-outdent"></i></button>
-      <button title="subscript"><i class="fas fa-subscript"></i></button>
-      <button title="superscript"><i class="fas fa-superscript"></i></button>
-      <button title="undo"><i class="fas fa-undo"></i></button>
-      <button title="redo"><i class="fas fa-redo"></i></button>
-      <button title="list ul"><i class="fas fa-list-ul"></i></button>
-      <button title="list ol"><i class="fas fa-list-ol"></i></button>
-      <button title="paragraph"><i class="fas fa-paragraph"></i></button>
+      <button title="cut" onclick="execCmd('cut')">
+        <i class="fas fa-cut"></i>
+      </button>
+      <button title="copy" onclick="execCmd('copy')">
+        <i class="fas fa-copy"></i>
+      </button>
+      <button title="indent" onclick="execCmd('indent')">
+        <i class="fas fa-indent"></i>
+      </button>
+      <button title="outdent" onclick="execCmd('outdent')">
+        <i class="fas fa-outdent"></i>
+      </button>
+      <button title="subscript" onclick="execCmd('subscript')">
+        <i class="fas fa-subscript"></i>
+      </button>
+      <button title="superscript" onclick="execCmd('superscript')">
+        <i class="fas fa-superscript"></i>
+      </button>
+      <button title="undo" onclick="execCmd('undo')">
+        <i class="fas fa-undo"></i>
+      </button>
+      <button title="redo" onclick="execCmd('redo')">
+        <i class="fas fa-redo"></i>
+      </button>
+      <button title="list ul" onclick="execCmd('insertUnorderList')">
+        <i class="fas fa-list-ul"></i>
+      </button>
+      <button title="list ol" onclick="execCmd('insertOrderList')">
+        <i class="fas fa-list-ol"></i>
+      </button>
+      <button title="paragraph" onclick="execCmd('insertParagraph')">
+        <i class="fas fa-paragraph"></i>
+      </button>
       <select>
         <option value="H1">H1</option>
         <option value="H2">H2</option>
@@ -47,22 +82,31 @@
         <option value="H5">H5</option>
         <option value="H6">H6</option>
       </select>
-      <button>HR</button>
-      <button title="link"><i class="fas fa-link"></i></button>
-      <button title="unlink"><i class="fas fa-unlink"></i></button>
-      <button title="code"><i class="fas fa-code"></i></button>
-      <button title="toggle edit">
-        <i class="fas fa-toggle-edit">Toggle Edit</i>
+      <button onclick="execCmd('insetHorizontalRule')">HR</button>
+      <button title="link" onclick="execCmd('')">
+        <!-- link vorodi sevom mikhad -->
+
+        <i
+          class="fas fa-link"
+          onclick="execCmdWithArg('createLink', prompt('Enter Link:' , 'https:\/\/'))"
+        ></i>
       </button>
+      <button title="unlink" onclick="execCmd('unlink')">
+        <i class="fas fa-unlink"></i>
+      </button>
+      <button title="code" onclick="toggleSourceCode()">
+        <i class="fas fa-code"></i>
+      </button>
+      <button title="toggle edit" onclick="toggleEdit()">Toggle Edit</button>
       <br /><br />
       <label>FontName</label>
-      <select id="">
+      <select onchange="execCmdWithArg('FontName', this.value)">
         <option value="Arial">Arial</option>
         <option value="Comic Sans Ms">Comic Sans Ms</option>
         <option value="Tahoma">Tahoma</option>
       </select>
       <label>FontSize</label>
-      <select>
+      <select onchange="execCmdWithArg('FontSize', this.value)">
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
@@ -71,15 +115,23 @@
         <option value="6">6</option>
       </select>
       <label>TextColor:</label>
-      <input type="color" />
+      <input type="color" onchange="execCmdWithArg('foreColor', this.value)" />
       <label for="">BackGround Color:</label>
-      <input type="color" />
-      <button title="image file"><i class="fas fa-file-image"></i></button>
-      <button>Select All</button>
-      <button>Delete</button>
+      <input
+        type="color"
+        onchange="execCmdWithArg('hiliteColor', this.value)"
+      />
+      <button
+        title="image file"
+        onclick="execCmdWithArg('insertImage', prompt('Enter your image adress:' , 'https:\/\/'))"
+      >
+        <i class="fas fa-file-image"></i>
+      </button>
+      <button onclick="execCmd('selectAll')">Select All</button>
+      <button onclick="execCmd('delete')">Delete</button>
     </div>
     <br />
-    <iframe width="1000px" height="500px"></iframe>
+    <iframe width="1000px" height="500px" name="textEditorDocument"></iframe>
     <script src="app.js"></script>
   </body>
 </html>
